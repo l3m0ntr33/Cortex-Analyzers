@@ -1,0 +1,50 @@
+{
+  "name": "OCDDatalake",
+  "version": "1.0",
+  "author": "CERT OrangeCyberdefense",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query domains, IPs, hashes, mails, registry keys and URLs on Orange Cyberdefense Threat Intelligence Datalake service.",
+  "dataTypeList": [
+    "domain",
+    "ip",
+    "url",
+    "fqdn",
+    "hash",
+    "mail"
+  ],
+  "command": "OCDDatalake/ocd_datalake.py",
+  "baseConfig": "OCDDatalake",
+  "config": "Lookup",
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "Datalake username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Datalake password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "env",
+      "description": "Datalake environment",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://datalake.cert.orangecyberdefense.com/",
+  "service_logo": {
+    "path": "assets/ocd_logo.png",
+    "caption": "logo"
+  }
+}
