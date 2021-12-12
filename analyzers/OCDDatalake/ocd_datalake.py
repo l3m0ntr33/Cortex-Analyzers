@@ -45,7 +45,9 @@ class OCDDatalakeAnalyzer(Analyzer):
 
         if max_score == 0:
             level = "safe"
-        if 0 < max_score < 50:
+        if 0 < max_score < 30:
+            level = "info"
+        if 30 <= max_score < 50:
             level = "suspicious"
         if max_score >= 50:
             level = "malicious"

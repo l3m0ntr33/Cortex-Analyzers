@@ -1,0 +1,148 @@
+<div class="panel panel-success" ng-if="success">
+
+    <div class="panel-heading">
+        <b>Orange Cyberdefense - Datalake Threat Intelligence</b>
+    </div>
+
+    <div class="panel panel-info" ng-if="!content.results.threat_found">
+        <div class="panel-heading">
+            <strong>SYNTHESIS</strong>
+        </div>
+        <div class="panel-body">
+            <div>
+                <dl class="dl-horizontal">
+                    <div ng-repeat="obj in content.results.content">
+                        <dt>Value</dt>
+                        <dd class="wrap">{{obj.atom_value | fang}}</dd>
+                    </div>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Type</dt>
+                    <dd class="wrap">{{content.results.atom_type}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Last updated</dt>
+                    <dd class="wrap">{{content.results.last_updated}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>First seen</dt>
+                    <dd class="wrap">{{content.results.first_seen}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Tags</dt>
+                    <dd class="wrap"><span ng-if="content.results.tags" ng-repeat="tag in content.results.tags">
+                        <span class="label label-info"><strong>{{tag.name}}</strong></span>&nbsp;
+                    </span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Link to Datalake</dt>
+                    <dd class="wrap"><a
+                            href="https://datalake.cert.orangecyberdefense.com/gui/threat/{{content.results.hashkey}}">https://datalake.cert.orangecyberdefense.com/gui/threat/{{content.results.hashkey}}</a>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <div ng-repeat="obj in content.results.content">
+                        <dt>External analysis link(s)</dt>
+                        <div ng-repeat="lnk in obj.external_analysis_link">
+
+                            <dd class="wrap"><a href="{{lnk}}">{{lnk}}</a></dd>
+                        </div>
+                    </div>
+                </dl>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="!content.results.threat_found">
+        <div class="panel-heading">
+            <strong>REPUTATION SCORE</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-striped">
+                <thead>
+                <th>Threat type</th>
+                <th>Threat score (0 to 100)</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="sc in content.results.scores">
+                    <td><span
+                            ng-class="{'label label-info': sc.score.risk<=30, 'label label-warning': sc.score.risk>30 && sc.score.risk<50, 'label label-danger': sc.score.risk >=50}">
+                        <strong>&nbsp;{{sc.threat_type}}&nbsp;</strong>
+                        </span></td>
+                    <td><span
+                            ng-class="{'label label-info': sc.score.risk<=30, 'label label-warning': sc.score.risk>30 && sc.score.risk<50, 'label label-danger': sc.score.risk >=50}">
+                        <strong>&nbsp;{{sc.score.risk}}&nbsp;</strong>
+                        </span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="!content.results.threat_found">
+        <div class="panel-heading">
+            <strong>SOURCES</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-striped">
+                <thead>
+                <th>Source</th>
+                <th>First event</th>
+                <th>Last event</th>
+                <th># events</th>
+                <th>Depth</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="src in content.results.sources">
+                    <td>{{src.source_id}}</td>
+                    <td>{{src.first_seen}}</td>
+                    <td>{{src.last_updated}}</td>
+                    <td>{{src.count}}</td>
+                    <td>{{src.min_depth}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="!content.results.threat_found">
+
+        <div class="panel-heading">
+            <strong>TAGS</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-striped">
+                <thead>
+                <th>Tag</th>
+                <th>Origin</th>
+                <th>Timestamp</th>
+                <th>Visibility</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tag in content.results.tags">
+                    <td><span class="label label-info"><strong>{{tag.name}}</strong></span></td>
+                    <td>{{tag.system_origin.source.source_id}}</td>
+                    <td>{{tag.timestamp_created}}</td>
+                    <td>{{tag.visibility}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- on error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        OCD Datalake <b>Error</b>
+    </div>
+    <div class="panel panel-info">
+        <dl class="dl-horizontal">
+            <dt>Error:</dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
