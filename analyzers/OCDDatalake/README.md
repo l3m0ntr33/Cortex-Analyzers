@@ -9,3 +9,6 @@ Get intelligence and reputation from domain names, FQDN, IP adresses (v4 & v6), 
 - Provide your Datalake password as a value for the `password` parameter.
 
 To get any help feel free to contact team@cert.orangecyberdefense.com.
+
+### TheHive template 
+![OCDDatalake_lookup_long](./assets/OCDDatalake_lookup_long.png)
