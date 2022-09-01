@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+
+import traceback
 from cortexutils.analyzer import Analyzer
 from datalake import Datalake, AtomType, Output
 
@@ -36,28 +38,34 @@ class OCDDatalakeAnalyzer(Analyzer):
         self.report({"results": results})
 
     def summary(self, raw):
-        taxonomies = []
-        max_score = 0
-        for score in raw.get('scores'):
-            if score['score']['risk'] >= max_score:
-                max_score = score['score']['risk']
-                threat_type = score['score']['threat_type']
+        try:
+            taxonomies = []
+            max_score = 0
+            threat_type = None
 
-        if max_score == 0:
-            level = "safe"
-        if 0 < max_score < 30:
-            level = "info"
-        if 30 <= max_score < 50:
-            level = "suspicious"
-        if max_score >= 50:
-            level = "malicious"
+            for score_object in raw.get('results', {}).get('scores'):
+                score = score_object['score']['risk']
+                if score >= max_score:
+                    max_score = score
+                    threat_type = score_object['threat_type']
 
-        taxonomies.append(self.build_taxonomy(level,
-                                              "OCD",
-                                              self.service,
-                                              "[{}]{}/100".format(threat_type, str(max_score))))
-        return {"taxonomies": taxonomies}
+            if max_score == 0:
+                level = "safe"
+            if 0 < max_score < 30:
+                level = "info"
+            if 30 <= max_score < 50:
+                level = "suspicious"
+            if max_score >= 50:
+                level = "malicious"
 
+            taxonomies.append(self.build_taxonomy(level,
+                                                  "OCD",
+                                                  self.service,
+                                                  "[{}]{}".format(threat_type, str(max_score))))
+            return {"taxonomies": taxonomies}
+
+        except Exception as e:
+            self.error(traceback.format_exc())
 
 if __name__ == "__main__":
     OCDDatalakeAnalyzer().run()
